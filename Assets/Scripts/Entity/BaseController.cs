@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 public class BaseController : MonoBehaviour
 {
-    protected Rigidbody _rigidbody;
+    protected Rigidbody2D _rigidbody;
     [SerializeField] private SpriteRenderer characterRenderer;
     [SerializeField] private Transform weaponPivot;
 
@@ -24,7 +24,7 @@ public class BaseController : MonoBehaviour
 
     protected virtual void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody>();
+        _rigidbody = GetComponent<Rigidbody2D>();
         animationHandler = GetComponent<AnimationHandler>();
     }
 
@@ -44,7 +44,7 @@ public class BaseController : MonoBehaviour
         Movment(movementDirection);
         if(knockbackDuration > 0.0f)
         {
-            knockbackDuration -=Time.deltaTime;
+            knockbackDuration -= Time.deltaTime;
         }
     }
 
@@ -53,7 +53,7 @@ public class BaseController : MonoBehaviour
 
     }
 
-    protected void Movment(Vector2 direction)
+    private void Movment(Vector2 direction)
     {
         direction = direction * 5;
         if (knockbackDuration > 0.0f) 
@@ -61,6 +61,8 @@ public class BaseController : MonoBehaviour
             direction *= 0.2f;
             direction += knockback;
         }
+
+        _rigidbody.velocity = direction;
     }
 
     private void Rotate(Vector2 direction)
